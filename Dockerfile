@@ -9,14 +9,12 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy app source
 COPY . .
 
-RUN npm build
-
 EXPOSE 8000
 
 # Define the Docker image's behavior at runtime
-CMD ["node", "www/server.js"]
+CMD ["npm", "run", "prod"]
