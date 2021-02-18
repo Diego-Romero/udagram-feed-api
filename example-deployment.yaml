@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: backend-feed
+  name: backend-feed
+spec:
+  replicas: 1
+  selector:
+10
+    matchLabels:
+11
+      service: backend-feed
+12
+  template:
+13
+    metadata:
+14
+      labels:
+15
+        service: backend-feed
+16
+    spec:
+17
+      containers:
+18
+        - image: martinezi/udagram-api-feed
+19
+          name: backend-feed
+20
+          imagePullPolicy: Always
+21
+          resources:
+22
+            requests:
+23
+              memory: "64Mi"
+24
+              cpu: "250m"
+25
+            limits:
+26
+              memory: "1024Mi"
+27
+              cpu: "500m"
+28
+          env:
+29
+            - name: URL
+30
+              valueFrom:
+31
+                configMapKeyRef:
+32
+                  name: env-config
+33
+                  key: URL
+34
+            - name: AWS_BUCKET
+35
+              valueFrom:
+36
+                configMapKeyRef:
+37
+                  name: env-config
+38
+                  key: AWS_BUCKET
+39
+            - name: AWS_PROFILE
+40
+              valueFrom:
+41
+                configMapKeyRef:
+42
+                  name: env-config
+43
+                  key: AWS_PROFILE
+44
+            - name: AWS_REGION
+45
+              valueFrom:
+46
+                configMapKeyRef:
+47
+                  name: env-config
+48
+                  key: AWS_REGION
+49
+            - name: JWT_SECRET
+50
+              valueFrom:
+51
+                configMapKeyRef:
+52
+                  name: env-config
+53
+                  key: JWT_SECRET
+54
+            - name: POSTGRESS_DB
+55
+              valueFrom:
+56
+                configMapKeyRef:
+57
+                  name: env-config
+58
+                  key: POSTGRESS_DB
+59
+            - name: POSTGRESS_HOST
+60
+              valueFrom:
+61
+                configMapKeyRef:
+62
+                  name: env-config
+63
+                  key: POSTGRESS_HOST
+64
+            - name: POSTGRESS_PASSWORD
+65
+              valueFrom:
+66
+                secretKeyRef:
+67
+                  name: env-secret
+68
+                  key: POSTGRESS_PASSWORD
+69
+            - name: POSTGRESS_USERNAME
+70
+              valueFrom:
+71
+                secretKeyRef:
+72
+                  name: env-secret
+73
+                  key: POSTGRESS_USERNAME
+74
+          volumeMounts:
+75
+            - name: aws-secret
+76
+              mountPath: "/root/.aws/"
+77
+              readOnly: true
+78
+      restartPolicy: Always
+79
+      volumes:
+80
+        - name: aws-secret
+81
+          secret:
+82
+            secretName: aws-secret

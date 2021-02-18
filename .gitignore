@@ -42,3 +42,5 @@ venv/
 !.elasticbeanstalk/*.global.yml
 
 .env
+aws-secret.yaml
+env-configmap.yaml
