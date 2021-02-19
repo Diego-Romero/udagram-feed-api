@@ -21,7 +21,7 @@ spec:
             secretName: aws-secret
       containers:
         - name: udagram-feed-api
-          image: jdiegoromero/udagram-feed-api
+          image: jdiegoromero/udagram-feed-api:latest
           imagePullPolicy: Always
           command: ["/bin/sh", "-c", "env"]
           resources:
@@ -33,6 +33,12 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 8000
+          args:
+            - while true; do
+              echo -en '\n';
+              printenv URL PORT POSTGRES_DB;
+              sleep 10;
+              done;
           env:
             - name: URL
               valueFrom:
