@@ -45,3 +45,4 @@ venv/
 aws-secret.yaml
 env-configmap.yaml
 config.properties.yaml
+env-deployment.yaml

@@ -14,17 +14,29 @@ spec:
       labels:
         service: udagram-feed-api
     spec:
+      restartPolicy: Always
+      volumes:
+        - name: aws-secret
+          secret:
+            secretName: aws-secret
+        - name: env-config
+          configMap:
+            name: env-config
       containers:
-        - image: jdiegoromero/udagram-feed-api
-          name: udagram-feed-api
+        - name: feed-api
+          image: jdiegoromero/udagram-feed-api
           imagePullPolicy: Always
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "1024Mi"
-              cpu: "500m"
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: env-config
+              mountPath: /etc/config
           env:
             - name: URL
               valueFrom:
@@ -76,15 +88,3 @@ spec:
                 configMapKeyRef:
                   name: env-secret
                   key: POSTGRES_USERNAME
-          volumeMounts:
-            - name: aws-secret
-              mountPath: "/root/.aws/"
-              readOnly: true
-      restartPolicy: Always
-      volumes:
-        - name: aws-secret
-          secret:
-            secretName: aws-secret
-        - name: env-config
-          configMap:
-            name: env-config
