@@ -28,12 +28,6 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8000
-            initialDelaySeconds: 5
-            periodSeconds: 5
           volumeMounts:
             - name: env-config
               mountPath: /etc/config
