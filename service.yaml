@@ -1,11 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: udagram-feed-service
+  name: udagram-feed-api
+  labels:
+    service: udagram-feed-api
 spec:
   selector:
-    run: udagram-feed-api
+    service: udagram-feed-api
   ports:
-    - port: 7000
-      protocol: TCP
+    - name: "8000"
+      port: 8000
       targetPort: 8000
